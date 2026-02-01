@@ -1,7 +1,7 @@
 #include "tcs34725.h"
 #include "stm32f4xx.h"
 
-extern I2C_HandleTypeDef hi2c1;
+extern I2C_HandleTypeDef hi2c1;                            //change this for your I2C port
 tcs34725IntegrationTime Int_Time= TCS34725_INTEGRATIONTIME_2_4MS;
 tcs34725Gain Gain= TCS34725_GAIN_1X;
 uint8_t _tcs34725Initialised = 0;
@@ -11,7 +11,7 @@ void write8 (uint8_t reg, uint32_t value)
     uint8_t txBuffer[2];
     txBuffer[0] = (TCS34725_COMMAND_BIT | reg);
     txBuffer[1] = (value & 0xFF);
-    HAL_I2C_Master_Transmit(&hi2c1, TCS34725_ADDRESS, txBuffer, 2, 100);
+    HAL_I2C_Master_Transmit(&hi2c1, TCS34725_ADDRESS, txBuffer, 2, 100);            //I2C port configuration
 }
 
 /* Reads an 8 bit value over I2C */
@@ -19,8 +19,8 @@ uint8_t read8(uint8_t reg)
 {
     uint8_t buffer[1];
     buffer[0] = (TCS34725_COMMAND_BIT | reg);
-    HAL_I2C_Master_Transmit(&hi2c1, TCS34725_ADDRESS, buffer, 1, 100);
-    HAL_I2C_Master_Receive(&hi2c1, TCS34725_ADDRESS, buffer, 1, 100);
+    HAL_I2C_Master_Transmit(&hi2c1, TCS34725_ADDRESS, buffer, 1, 100);            //I2C port configuration
+    HAL_I2C_Master_Receive(&hi2c1, TCS34725_ADDRESS, buffer, 1, 100);             //I2C port configuration
     return buffer[0];
 }
 
@@ -30,8 +30,8 @@ uint16_t read16(uint8_t reg)
   uint16_t ret;
     uint8_t txBuffer[1],rxBuffer[2];
     txBuffer[0] = (TCS34725_COMMAND_BIT | reg);
-    HAL_I2C_Master_Transmit(&hi2c1, TCS34725_ADDRESS, txBuffer, 1, 100);
-    HAL_I2C_Master_Receive(&hi2c1, TCS34725_ADDRESS, rxBuffer, 2, 100);
+    HAL_I2C_Master_Transmit(&hi2c1, TCS34725_ADDRESS, txBuffer, 1, 100);           //I2C port configuration
+    HAL_I2C_Master_Receive(&hi2c1, TCS34725_ADDRESS, rxBuffer, 2, 100);            //I2C port configuration
     ret = rxBuffer[1];
     ret <<= 8;
     ret |= rxBuffer[0] & 0xFF;
